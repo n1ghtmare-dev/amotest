@@ -1,0 +1,27 @@
+[project]
+name = "metrics-control"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "n1ghtmare-dev",email = "oboev3691@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "django (==5.0)",
+    "celery (==5.3)",
+    "redis (>=6.2.0,<7.0.0)",
+    "httpx (>=0.28.1,<0.29.0)",
+    "mysqlclient (>=2.2.7,<3.0.0)",
+    "requests (>=2.32.4,<3.0.0)",
+    "django-admin (>=2.0.2,<3.0.0)",
+    "django-celery-beat (>=2.8.1,<3.0.0)"
+]
+
+[tool.poetry]
+packages = [{include = "metrics_control", from = "src"}]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -27,4 +27,5 @@ class Incident(models.Model):
     machine = models.ForeignKey(Machine, on_delete=models.CASCADE)
     incident_type = models.CharField(max_length=10)
     value = models.FloatField()
+    active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)

@@ -1,30 +1,43 @@
 import requests 
 from celery import shared_task
-from .models import Machine, Metric
+from monitoring.models import Machine, Metric
+from monitoring.services.incident_service import IncidentService
+import logging
 
+
+logger = logging.getLogger(__name__)
 
 @shared_task
 def collect_metrics():
     machines = Machine.objects.all()
-    print(machines)
 
     for machine in machines:
         try:
-            response = requests.get(machine.endpoint, timeout=5)
-            data = response.json()
+            data = get_machine_metrics(machine.endpoint)
 
             mem_percent = float(data["mem"].strip('%'))
             disk_percent = float(data["disk"].strip('%'))
 
-            Metric.objects.create(
+            metric = Metric.objects.create(
                 machine=machine,
                 cpu=float(data["cpu"]),
                 mem=mem_percent,
                 disk=disk_percent,
                 uptime=data["uptime"],
             )
-        except Exception as e:
-            print(f"Failet to collect from {machine.name}: {e}")
 
+            IncidentService.check_incidents(machine, metric)
+
+        except Exception as e:
+            logger.error(f"Failet to collect from {machine.name}: {e}")
+
+
+def get_machine_metrics(endpoint: str) -> dict:
+    try:
+        response = requests.get(endpoint, timeout=5)
+        return response.json()
+    except Exception as e:
+        logger.error(f"API Error {endpoint}: {e}")
+        return {}
 
 

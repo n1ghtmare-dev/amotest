@@ -1,9 +1,10 @@
-import requests 
-from celery import shared_task
-from monitoring.models import Machine, Metric
-from monitoring.services.incident_service import IncidentService
 import logging
 
+import requests
+from celery import shared_task
+
+from monitoring.models import Machine, Metric
+from monitoring.services.incident_service import IncidentService
 
 logger = logging.getLogger(__name__)
 
@@ -15,8 +16,8 @@ def collect_metrics():
         try:
             data = get_machine_metrics(machine.endpoint)
 
-            mem_percent = float(data["mem"].strip('%'))
-            disk_percent = float(data["disk"].strip('%'))
+            mem_percent = float(data["mem"].strip("%"))
+            disk_percent = float(data["disk"].strip("%"))
 
             metric = Metric.objects.create(
                 machine=machine,

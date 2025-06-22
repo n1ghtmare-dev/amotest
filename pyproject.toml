@@ -19,9 +19,33 @@ dependencies = [
     "python-dotenv (>=1.1.0,<2.0.0)"
 ]
 
+[tool.ruff]
+line-length = 120
+select = [
+    "E", 
+    "F",  
+    "B", 
+    "I",
+    "UP",
+    "C4",
+    "W",
+    "Q",
+    "RUF",
+]
+ignore = [
+    "E501",
+    "F401",
+]
+
+[tool.ruff.isort]
+known-first-party = ["metrics_control", "monitoring"]
+
 [tool.poetry]
 packages = [{include = "metrics_control", from = "src"}]
 
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.12.0"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

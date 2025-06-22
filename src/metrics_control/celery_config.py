@@ -1,4 +1,5 @@
-import os 
+import os
+
 from celery import Celery
 from django.conf import settings
 from dotenv import load_dotenv
